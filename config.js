@@ -22,7 +22,7 @@ window.ORBITASK_CONFIG = {
   contact: {
     email: 'tiendatsgu298@gmail.com',
     github: 'https://github.com/OwenDepTry',
-    facebook: '',   // vd: 'https://facebook.com/ten-cua-ban'
+    facebook: 'https://www.facebook.com/owentoichoi',   // vd: 'https://facebook.com/ten-cua-ban'
     linkedin: '',   // vd: 'https://linkedin.com/in/ten-cua-ban'
     feedback: 'https://docs.google.com/forms/d/e/1FAIpQLSdJle2Lma3chhwwqi_1tr5f-6ehph95Os5R6U5EWl_ImcV4kQ/viewform?usp=publish-editor'   // link Google Form góp ý
   }
