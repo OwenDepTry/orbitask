@@ -7,7 +7,7 @@
    KHI SỬA CODE VÀ DEPLOY LẠI: tăng số phiên bản CACHE (vd 'orbitask-v3')
    để người dùng nhận bản mới thay vì bản đã lưu.
    ========================================================================== */
-const CACHE = 'orbitask-v2';
+const CACHE = 'orbitask-v3';
 const APP_SHELL = [
   './',
   'index.html',

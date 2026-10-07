@@ -1094,6 +1094,108 @@
     }
 
     /* ==========================================================================
+       8c. ĐIỆN THOẠI (Android / iPhone) — ưu tiên thấy công việc ngay khi mở app
+           • Topbar 1 dòng: ô tìm kiếm ẩn sau nút kính lúp
+           • Chế độ xem chuyển xuống thanh điều hướng đáy
+           • Số liệu gọn 1 hàng, thanh nhắc 1 dòng, tab cột dính khi cuộn
+       ========================================================================== */
+    .search-toggle, .bottom-nav { display: none; }
+
+    @media (max-width: 767px) {
+      :root { --bottom-nav-h: 68px; --topbar-h: 73px; }
+      /* Thanh đáy & tab dính: nền đặc hơn để chữ phía sau không lộ qua */
+      :root { --surface-bar: rgba(10, 14, 39, 0.92); }
+      :root[data-theme="light"] { --surface-bar: rgba(255, 255, 255, 0.94); }
+
+      /* Topbar */
+      .topbar__inner { flex-wrap: wrap; gap: var(--space-1); }
+      .topbar__actions { gap: var(--space-1); }
+      .topbar__actions .icon-btn { width: 40px; height: 40px; }
+      .search-toggle { display: grid; }
+      .search { display: none; }
+      .topbar.is-searching .search { display: block; }
+
+      /* Thanh điều hướng đáy */
+      .views { display: none !important; }
+      .bottom-nav {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 44;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-1);
+        padding: 6px max(var(--space-2), env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(var(--space-2), env(safe-area-inset-left));
+        background: var(--surface-bar);
+        border-top: 1px solid var(--glass-border-subtle);
+        -webkit-backdrop-filter: var(--glass-blur);
+        backdrop-filter: var(--glass-blur);
+      }
+      .bottom-nav__btn {
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+        min-height: 56px;
+        font-size: var(--fs-xs); font-weight: 600;
+        color: var(--color-text-muted);
+      }
+      .bottom-nav__icon { position: relative; display: grid; place-items: center; width: 56px; height: 30px; border-radius: var(--radius-pill); }
+      .bottom-nav__icon::before {
+        content: ""; position: absolute; inset: 0; border-radius: inherit;
+        background: var(--color-purple-soft);
+        border: 1px solid var(--color-purple-border);
+        opacity: 0; transition: opacity var(--ease);
+      }
+      .bottom-nav__icon svg { position: relative; width: 22px; height: 22px; }
+      .bottom-nav__btn[aria-pressed="true"] { color: var(--color-heading); }
+      .bottom-nav__btn[aria-pressed="true"] .bottom-nav__icon::before { opacity: 1; }
+
+      /* Nút nổi + thông báo nằm trên thanh đáy */
+      .fab { bottom: calc(var(--bottom-nav-h) + var(--space-2) + env(safe-area-inset-bottom)); }
+      .toast { bottom: calc(var(--bottom-nav-h) + 56px + var(--space-4) + env(safe-area-inset-bottom)); }
+      .app__inner { gap: var(--space-2); padding-top: var(--space-2); padding-bottom: calc(var(--bottom-nav-h) + var(--space-12, 96px) + env(safe-area-inset-bottom)); }
+
+      /* Tiêu đề gọn */
+      .overview { gap: 12px; }
+      .overview__title h1 { font-size: 1.5rem; }
+      .overview__date { font-size: var(--fs-xs); }
+
+      /* 4 số liệu trên 1 hàng */
+      .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-1); }
+      .stat { flex-direction: column-reverse; align-items: center; justify-content: center; gap: 4px; padding: 12px 4px; text-align: center; }
+      .stat__icon { display: none; }
+      .stat__label { justify-content: center; font-size: 0.6875rem; line-height: 1.3; }
+      .stat__value { font-size: 1.25rem; }
+      .progress { gap: var(--space-1); padding: 12px var(--space-2); }
+      .progress__row strong { font-size: var(--fs-body); }
+
+      /* Thanh nhắc 1 dòng */
+      .reminder { flex-wrap: nowrap; gap: var(--space-1); padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2); }
+      .reminder__icon { display: none; }
+      .reminder__text { flex: 1 1 auto; font-size: var(--fs-xs); line-height: 1.4; }
+      .reminder__actions { gap: 4px; flex-shrink: 0; }
+      .reminder__actions .btn { min-height: 40px; padding: 0 12px; font-size: var(--fs-small); }
+      .reminder__actions .icon-btn { width: 40px; height: 40px; }
+
+      /* Tab cột dính dưới topbar khi cuộn */
+      .board-tabs {
+        position: sticky; top: var(--topbar-h); z-index: 30;
+        background: var(--surface-bar);
+        -webkit-backdrop-filter: var(--glass-blur);
+        backdrop-filter: var(--glass-blur);
+      }
+
+      /* Thẻ công việc gọn hơn để thấy nhiều việc trên 1 màn */
+      .task { gap: 12px; padding: var(--space-2); }
+    }
+
+    /* Màn cảm ứng: kéo thả đổi thứ tự cần chuột → ẩn phần Sắp xếp; nhãn dễ chạm hơn */
+    @media (max-width: 767px) and (hover: none) {
+      .toolbar__end { display: none; }
+    }
+    @media (hover: none) {
+      .task-tag { min-height: 32px; padding-inline: 10px; }
+    }
+
+    /* Màn rất hẹp (≤ 379px): bỏ chữ cạnh logo để đủ chỗ cho các nút */
+    @media (max-width: 379px) {
+      .logo > span:last-child { display: none; }
+    }
+
+    /* ==========================================================================
        9. REDUCED MOTION
        ========================================================================== */
     @media (prefers-reduced-motion: reduce) {
@@ -1133,6 +1235,9 @@
       </div>
 
       <div class="topbar__actions">
+        <button class="icon-btn search-toggle" type="button" id="search-toggle" aria-expanded="false" aria-controls="search-input" aria-label="Tìm kiếm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
         <button class="icon-btn" type="button" id="notify-btn" aria-pressed="false" aria-label="Bật thông báo nhắc việc">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 003.4 0"/></svg>
         </button>
@@ -1377,6 +1482,22 @@
   </main>
 
   <!-- Nút nổi thêm việc (điện thoại) — thêm vào cột đang xem -->
+  <!-- Thanh điều hướng đáy (điện thoại): đổi chế độ xem kiểu app Android -->
+  <nav class="bottom-nav" aria-label="Chế độ xem">
+    <button class="bottom-nav__btn" type="button" data-view="board" aria-pressed="true">
+      <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg></span>
+      <span>Bảng</span>
+    </button>
+    <button class="bottom-nav__btn" type="button" data-view="calendar" aria-pressed="false">
+      <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
+      <span>Lịch</span>
+    </button>
+    <button class="bottom-nav__btn" type="button" data-view="stats" aria-pressed="false">
+      <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+      <span>Thống kê</span>
+    </button>
+  </nav>
+
   <button class="fab" type="button" data-open-new="active" aria-label="Thêm công việc mới">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
   </button>
@@ -2159,7 +2280,23 @@
       });
     }
 
+    // Điện thoại: ô tìm kiếm ẩn sau nút kính lúp
+    const topbarEl = $('.topbar');
+    const searchToggle = $('#search-toggle');
+    function setSearchOpen(open) {
+      topbarEl.classList.toggle('is-searching', open);
+      searchToggle.setAttribute('aria-expanded', String(open));
+    }
+    searchToggle.addEventListener('click', () => {
+      const open = !topbarEl.classList.contains('is-searching');
+      setSearchOpen(open);
+      if (open) searchInput.focus();
+    });
+    // Rời ô tìm kiếm khi đang trống → thu gọn lại
+    searchInput.addEventListener('blur', () => { if (!searchInput.value.trim()) setSearchOpen(false); });
+
     function filterByTag(name) {
+      setSearchOpen(true); // cho thấy ô tìm kiếm đang lọc theo nhãn
       searchInput.value = '#' + name;
       state.query = searchInput.value;
       render();
