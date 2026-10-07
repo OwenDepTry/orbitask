@@ -1,0 +1,24 @@
+# Cấu hình Netlify cho Orbitask
+# Orbitask là web tĩnh (HTML/CSS/JS thuần) nên không cần bước build.
+
+[build]
+  publish = "."
+
+# sw.js và manifest: luôn lấy bản mới nhất để người dùng nhận được cập nhật
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "no-cache"
+
+# Một vài header bảo mật cơ bản
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

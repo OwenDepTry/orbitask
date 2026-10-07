@@ -1,0 +1,12 @@
+# File của hệ điều hành
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Cài đặt riêng của trình soạn code
+.vscode/
+.idea/
+
+# File sao lưu dữ liệu cá nhân và file lịch: đừng đẩy lên GitHub
+orbitask-backup-*.json
+*.ics
